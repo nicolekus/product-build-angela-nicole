@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Next Actions — Student Recruiting Support Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item active">Next Actions</li>
+      </ol>
+    </nav>
+    <h1><i class="bi bi-lightning-charge-fill me-2"></i>Next Actions</h1>
+    <p class="mb-0 opacity-75">View your upcoming tasks or check for overdue follow-ups.</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  <div class="row g-4 justify-content-center">
+
+    <div class="col-sm-6 col-lg-4">
+      <a href="{{ url_for('upcoming_actions') }}" class="nav-card d-block">
+        <div class="card text-center border-0 shadow-sm">
+          <div class="card-body py-4">
+            <div class="card-icon text-success" style="font-size:2.5rem; margin-bottom:1rem;">
+              <i class="bi bi-calendar-check-fill"></i>
+            </div>
+            <h5 class="card-title fw-semibold">Upcoming Actions</h5>
+            <p class="card-text text-muted small">Tasks and follow-ups due today or in the future.</p>
+            <span class="btn btn-outline-success btn-sm mt-2">View Upcoming</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-sm-6 col-lg-4">
+      <a href="{{ url_for('overdue_actions') }}" class="nav-card d-block">
+        <div class="card text-center border-0 shadow-sm">
+          <div class="card-body py-4">
+            <div class="card-icon text-danger" style="font-size:2.5rem; margin-bottom:1rem;">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <h5 class="card-title fw-semibold">Overdue Actions</h5>
+            <p class="card-text text-muted small">Tasks that are past their due date and still pending.</p>
+            <span class="btn btn-outline-danger btn-sm mt-2">View Overdue</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

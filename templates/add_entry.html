@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Add Entry — Student Recruiting Support Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('applications') }}">Applications</a></li>
+        <li class="breadcrumb-item active">Add Entry</li>
+      </ol>
+    </nav>
+    <h1><i class="bi bi-plus-circle-fill me-2"></i>Add New Application</h1>
+  </div>
+</div>
+
+<div class="container pb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <form method="POST" action="{{ url_for('add_entry') }}" novalidate>
+
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label for="application_number" class="form-label fw-semibold">Application Number <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="application_number" name="application_number"
+                       value="{{ form_data.get('application_number', '') }}" required placeholder="e.g. APP-001">
+              </div>
+
+              <div class="col-md-6">
+                <label for="company" class="form-label fw-semibold">Company <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="company" name="company"
+                       value="{{ form_data.get('company', '') }}" required placeholder="e.g. Acme Corp">
+              </div>
+
+              <div class="col-md-12">
+                <label for="role" class="form-label fw-semibold">Role / Position <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="role" name="role"
+                       value="{{ form_data.get('role', '') }}" required placeholder="e.g. Software Engineer Intern">
+              </div>
+
+              <div class="col-md-6">
+                <label for="current_status" class="form-label fw-semibold">Current Status <span class="text-danger">*</span></label>
+                <select class="form-select" id="current_status" name="current_status" required>
+                  <option value="" disabled {% if not form_data.get('current_status') %}selected{% endif %}>Select status…</option>
+                  {% for option in status_options %}
+                    <option value="{{ option }}" {% if form_data.get('current_status') == option %}selected{% endif %}>{{ option }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="next_action" class="form-label fw-semibold">Next Action <span class="text-danger">*</span></label>
+                <select class="form-select" id="next_action" name="next_action" required>
+                  <option value="" disabled {% if not form_data.get('next_action') %}selected{% endif %}>Select action…</option>
+                  {% for option in next_action_options %}
+                    <option value="{{ option }}" {% if form_data.get('next_action') == option %}selected{% endif %}>{{ option }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="next_action_due_date" class="form-label fw-semibold">Next Action Due Date <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="next_action_due_date" name="next_action_due_date"
+                       value="{{ form_data.get('next_action_due_date', '') }}" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="last_updated" class="form-label fw-semibold">Last Updated <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="last_updated" name="last_updated"
+                       value="{{ form_data.get('last_updated', '') }}" required>
+              </div>
+
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-check-lg me-1"></i>Save Application
+              </button>
+              <a href="{{ url_for('applications') }}" class="btn btn-outline-secondary px-4">Cancel</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Upcoming Actions — Student Recruiting Support Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('next_actions') }}">Next Actions</a></li>
+        <li class="breadcrumb-item active">Upcoming</li>
+      </ol>
+    </nav>
+    <h1><i class="bi bi-calendar-check-fill me-2"></i>Upcoming Actions</h1>
+    <p class="mb-0 opacity-75">Tasks and follow-ups due today or in the future, sorted by due date.</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  {% if applications %}
+    <div class="card shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Action Needed</th>
+              <th>Due Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in applications %}
+            <tr>
+              <td class="fw-semibold">{{ app['company'] }}</td>
+              <td class="text-muted">{{ app['role'] }}</td>
+              <td>
+                <span class="badge bg-success rounded-pill px-3 py-2">{{ app['next_action'] }}</span>
+              </td>
+              <td>
+                {% if app['next_action_due_date'] == today %}
+                  <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
+                    <i class="bi bi-clock me-1"></i>Today
+                  </span>
+                {% else %}
+                  <span class="text-muted">{{ app['next_action_due_date'] }}</span>
+                {% endif %}
+              </td>
+              <td>
+                <a href="{{ url_for('application_detail', app_id=app['id']) }}" class="btn btn-sm btn-outline-primary">
+                  Update
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="text-muted small mt-2">{{ applications|length }} upcoming action(s).</p>
+  {% else %}
+    <div class="alert alert-success d-flex align-items-center mt-2" role="alert">
+      <i class="bi bi-check-circle-fill me-3 fs-4"></i>
+      <div>
+        <strong>All caught up!</strong> You have no upcoming action items at this time.
+        <br><a href="{{ url_for('applications') }}" class="alert-link">View all applications</a> to add due dates.
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

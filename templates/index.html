@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Home — Student Recruiting Support Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header text-center">
+  <div class="container">
+    <h1><i class="bi bi-briefcase-fill me-2"></i>Student Recruiting Support Dashboard</h1>
+    <p class="mb-0 mt-2 opacity-75">Track your job applications, manage actions, and review your progress — all in one place.</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  <div class="row g-4 justify-content-center">
+
+    <div class="col-sm-6 col-lg-3">
+      <a href="{{ url_for('applications') }}" class="nav-card d-block">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="card-icon text-primary">
+              <i class="bi bi-folder2-open"></i>
+            </div>
+            <h5 class="card-title fw-semibold mb-2">Applications</h5>
+            <p class="card-text text-muted small">View all submitted applications and their current status.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <a href="{{ url_for('next_actions') }}" class="nav-card d-block">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="card-icon text-warning">
+              <i class="bi bi-lightning-charge-fill"></i>
+            </div>
+            <h5 class="card-title fw-semibold mb-2">Next Actions</h5>
+            <p class="card-text text-muted small">See upcoming tasks and overdue follow-ups at a glance.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <a href="{{ url_for('weekly_review') }}" class="nav-card d-block">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="card-icon text-success">
+              <i class="bi bi-calendar-week-fill"></i>
+            </div>
+            <h5 class="card-title fw-semibold mb-2">Weekly Review</h5>
+            <p class="card-text text-muted small">Review your week's upcoming and overdue action items.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <a href="{{ url_for('status_history') }}" class="nav-card d-block">
+        <div class="card text-center">
+          <div class="card-body">
+            <div class="card-icon text-info">
+              <i class="bi bi-clock-history"></i>
+            </div>
+            <h5 class="card-title fw-semibold mb-2">Status &amp; History</h5>
+            <p class="card-text text-muted small">Understand your application progress and lifecycle stages.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

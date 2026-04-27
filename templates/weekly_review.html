@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Weekly Review — Student Recruiting Support Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item active">Weekly Review</li>
+      </ol>
+    </nav>
+    <h1><i class="bi bi-calendar-week-fill me-2"></i>Weekly Review</h1>
+    <p class="mb-0 opacity-75">Your summary of upcoming and overdue action items for the week.</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+
+  <!-- Summary badges -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm text-center py-3">
+        <div class="display-6 fw-bold text-success">{{ upcoming|length }}</div>
+        <div class="text-muted small">Upcoming</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm text-center py-3">
+        <div class="display-6 fw-bold text-danger">{{ overdue|length }}</div>
+        <div class="text-muted small">Overdue</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overdue Section -->
+  <h4 class="fw-semibold mb-3 text-danger"><i class="bi bi-exclamation-triangle-fill me-2"></i>Overdue Actions</h4>
+  {% if overdue %}
+    <div class="card shadow-sm mb-4">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Action Needed</th>
+              <th>Due Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in overdue %}
+            <tr>
+              <td class="fw-semibold">{{ app['company'] }}</td>
+              <td class="text-muted">{{ app['role'] }}</td>
+              <td><span class="badge bg-danger rounded-pill px-3 py-2">{{ app['next_action'] }}</span></td>
+              <td class="text-danger fw-semibold">{{ app['next_action_due_date'] }}</td>
+              <td>
+                <a href="{{ url_for('application_detail', app_id=app['id']) }}" class="btn btn-sm btn-danger">
+                  <i class="bi bi-pencil me-1"></i>Update
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <div class="alert alert-success mb-4">
+      <i class="bi bi-check-circle-fill me-2"></i><strong>No Overdue Actions</strong> — great job staying on track!
+    </div>
+  {% endif %}
+
+  <!-- Upcoming Section -->
+  <h4 class="fw-semibold mb-3 text-success"><i class="bi bi-calendar-check-fill me-2"></i>Upcoming Actions</h4>
+  {% if upcoming %}
+    <div class="card shadow-sm mb-4">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Action Needed</th>
+              <th>Due Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in upcoming %}
+            <tr>
+              <td class="fw-semibold">{{ app['company'] }}</td>
+              <td class="text-muted">{{ app['role'] }}</td>
+              <td>
+                <span class="badge bg-success rounded-pill px-3 py-2">{{ app['next_action'] }}</span>
+              </td>
+              <td>
+                {% if app['next_action_due_date'] == today %}
+                  <span class="badge bg-warning text-dark"><i class="bi bi-clock me-1"></i>Today</span>
+                {% else %}
+                  <span class="text-muted">{{ app['next_action_due_date'] }}</span>
+                {% endif %}
+              </td>
+              <td>
+                <a href="{{ url_for('application_detail', app_id=app['id']) }}" class="btn btn-sm btn-outline-success">
+                  <i class="bi bi-pencil me-1"></i>Update
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <div class="alert alert-info mb-4">
+      <i class="bi bi-info-circle-fill me-2"></i>No upcoming actions scheduled.
+      <a href="{{ url_for('applications') }}" class="alert-link">Add applications</a> with due dates to see them here.
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

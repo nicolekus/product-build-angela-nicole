@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Status &amp; History — Student Recruiting Support Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item active">Status &amp; History</li>
+      </ol>
+    </nav>
+    <h1><i class="bi bi-clock-history me-2"></i>Status &amp; History</h1>
+    <p class="mb-0 opacity-75">Understand your application lifecycle and track your progress.</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+
+  <!-- Application Lifecycle -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-white py-3">
+      <h5 class="mb-0 fw-semibold"><i class="bi bi-signpost-split me-2 text-primary"></i>Application Lifecycle</h5>
+    </div>
+    <div class="card-body">
+      <p class="text-muted mb-4">Every job application goes through several stages. Understanding where each application stands helps you prioritize your time and follow up effectively.</p>
+
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-4">
+          <div class="p-3 rounded-3 h-100" style="background:#e8f0fe; border-left: 4px solid #0d6efd;">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge bg-primary rounded-pill me-2 px-3">Applied</span>
+            </div>
+            <p class="mb-0 small text-muted">You have submitted your application. The company is reviewing your materials. Tip: Record the date and follow up within 1–2 weeks if you haven't heard back.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="p-3 rounded-3 h-100" style="background:#f3e8ff; border-left: 4px solid #6f42c1;">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge rounded-pill me-2 px-3" style="background:#6f42c1;">Phone Screen</span>
+            </div>
+            <p class="mb-0 small text-muted">A recruiter or hiring manager has reached out for an initial conversation. Prepare a quick summary of your background and questions about the role.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="p-3 rounded-3 h-100" style="background:#fff3e0; border-left: 4px solid #fd7e14;">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge rounded-pill me-2 px-3" style="background:#fd7e14;">Interview Scheduled</span>
+            </div>
+            <p class="mb-0 small text-muted">You have a formal interview lined up. Research the company, prepare your answers, and confirm details like format, interviewers, and logistics.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="p-3 rounded-3 h-100" style="background:#e8f5e9; border-left: 4px solid #198754;">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge bg-success rounded-pill me-2 px-3">Offer Received</span>
+            </div>
+            <p class="mb-0 small text-muted">Congratulations! You have received a job offer. Take time to review the terms, compensation, and benefits before responding or negotiating.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="p-3 rounded-3 h-100" style="background:#fdecea; border-left: 4px solid #dc3545;">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge bg-danger rounded-pill me-2 px-3">Rejected</span>
+            </div>
+            <p class="mb-0 small text-muted">The company has decided not to move forward. Consider requesting feedback, reflect on areas to improve, and keep applying — rejection is a normal part of the process.</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <div class="p-3 rounded-3 h-100" style="background:#f8f9fa; border-left: 4px solid #6c757d;">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge bg-secondary rounded-pill me-2 px-3">Withdrawn</span>
+            </div>
+            <p class="mb-0 small text-muted">You have chosen to withdraw your application. It's always courteous to formally notify the employer and keep the door open for future opportunities.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Summary -->
+  {% if status_counts %}
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-white py-3">
+      <h5 class="mb-0 fw-semibold"><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Your Current Summary</h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        {% for status, count in status_counts.items() %}
+        {% set cls = status.replace(' ', '-') %}
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="text-center p-3 rounded-3 bg-light">
+            <div class="display-6 fw-bold text-primary">{{ count }}</div>
+            <span class="badge status-badge-{{ cls }} rounded-pill mt-1 px-2 py-1 small">{{ status }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- All Applications History -->
+  {% if applications %}
+  <div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+      <h5 class="mb-0 fw-semibold"><i class="bi bi-list-ul me-2 text-primary"></i>Application History</h5>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Company</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Last Updated</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for app in applications %}
+          <tr>
+            <td class="text-muted small">{{ app['application_number'] }}</td>
+            <td class="fw-semibold">{{ app['company'] }}</td>
+            <td>{{ app['role'] }}</td>
+            <td>
+              {% set cls = app['current_status'].replace(' ', '-') %}
+              <span class="badge status-badge-{{ cls }} rounded-pill px-3 py-2">{{ app['current_status'] }}</span>
+            </td>
+            <td class="text-muted small">{{ app['last_updated'] }}</td>
+            <td>
+              <a href="{{ url_for('application_detail', app_id=app['id']) }}" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-eye me-1"></i>View
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <div class="alert alert-info">
+    <i class="bi bi-info-circle-fill me-2"></i>No applications yet. <a href="{{ url_for('add_entry') }}" class="alert-link">Add your first application</a> to start tracking your history.
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

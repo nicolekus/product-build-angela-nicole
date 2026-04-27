@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Overdue Actions — Student Recruiting Support Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('next_actions') }}">Next Actions</a></li>
+        <li class="breadcrumb-item active">Overdue</li>
+      </ol>
+    </nav>
+    <h1><i class="bi bi-exclamation-triangle-fill me-2"></i>Overdue Actions</h1>
+    <p class="mb-0 opacity-75">Tasks that are past their due date and still require attention.</p>
+  </div>
+</div>
+
+<div class="container pb-5">
+  {% if applications %}
+    <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-3 fs-5"></i>
+      <div>
+        You have <strong>{{ applications|length }} overdue action(s)</strong>. Please follow up on these items as soon as possible.
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-danger">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Action Needed</th>
+              <th>Due Date</th>
+              <th>Days Overdue</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in applications %}
+            {% set due = app['next_action_due_date'] %}
+            <tr class="table-danger-soft">
+              <td class="fw-semibold">{{ app['company'] }}</td>
+              <td class="text-muted">{{ app['role'] }}</td>
+              <td>
+                <span class="badge bg-danger rounded-pill px-3 py-2">{{ app['next_action'] }}</span>
+              </td>
+              <td class="text-danger fw-semibold">{{ due }}</td>
+              <td>
+                <span class="text-danger small"><i class="bi bi-clock me-1"></i>Past due</span>
+              </td>
+              <td>
+                <a href="{{ url_for('application_detail', app_id=app['id']) }}" class="btn btn-sm btn-danger">
+                  Update Now
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <div class="alert alert-success d-flex align-items-center mt-2" role="alert">
+      <i class="bi bi-check-circle-fill me-3 fs-4"></i>
+      <div>
+        <strong>No Overdue Actions!</strong> Great work — you're on top of all your follow-ups.
+        <br><a href="{{ url_for('upcoming_actions') }}" class="alert-link">View upcoming actions</a> to stay ahead.
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
